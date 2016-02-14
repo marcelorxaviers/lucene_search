@@ -7,10 +7,12 @@ class Term
   def initialize(original_term)
     @original_term = original_term.strip
     @regex = self_regexing
+    @negation = @original_term[0] == '-' 
   end
 
   def in?(string)
-    regex =~ string || @original_term == string
+    r = regex =~ string || @original_term == string
+    return negation? ? !r : r
   end
 
   def to_s
@@ -20,12 +22,16 @@ class Term
   private
 
   def self_regexing
-    term = @original_term.dup.strip
-    term = term[0] == '*' ? term[1..-1] : "(#{@@punctuation}|\\A)#{term}"
+    term = @original_term.dup
+    term = /[-*]/ =~ term[0]  ? term[1..-1] : "(#{@@punctuation}|\\A)#{term}"
     term = term[-1] == '*' ? term[0..-2] : "#{term}(#{@@punctuation}|\\Z)" 
-    term.gsub!('*', '\w*')
     term.gsub!('"', '')
+    term.gsub!('*', '\w*')
     Regexp.new(term)
+  end
+
+  def negation?
+  	@negation
   end
 
 end

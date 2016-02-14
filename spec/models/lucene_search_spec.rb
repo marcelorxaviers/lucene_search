@@ -38,7 +38,7 @@ RSpec.describe LuceneSearch, :type => :model do
 
         end
 
-        context "* (asterisk)" do
+        context "with asterisk" do
 
 	        context "starting with anything" do
 	          
@@ -94,6 +94,18 @@ RSpec.describe LuceneSearch, :type => :model do
 	      	
 	      	let(:search1) { LuceneSearch.new('"not much"') }
 	        let(:search2) { LuceneSearch.new('"not so much"') }
+
+	        it "returns true" do
+	          expect(search1.test(str)).not_to be
+	          expect(search2.test(str)).to be
+	         end
+
+	      end
+
+	      context "with negation" do
+	      	
+	      	let(:search1) { LuceneSearch.new('-apples') }
+	        let(:search2) { LuceneSearch.new('-me') }
 
 	        it "returns true" do
 	          expect(search1.test(str)).not_to be
@@ -180,10 +192,19 @@ RSpec.describe LuceneSearch, :type => :model do
 
       end
 
-      context "- (not)" do
-      end
+      context "with (parentheses)" do
 
-      context "() (parentheses)" do
+        let(:search1) { LuceneSearch.new('(bananas OR mangos) AND much') }
+        let(:search2) { LuceneSearch.new('(bananas OR mangos) AND frozen') }
+
+        it "returns true" do
+          expect(search1.test(str)).to be
+        end
+
+    		it "returns false" do
+          expect(search2.test(str)).not_to be
+        end
+
       end
 
     end

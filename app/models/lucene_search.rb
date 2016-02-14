@@ -14,7 +14,7 @@ class LuceneSearch
 
   def evaluate(string)
     parsed = @query.dup
-    @query.split(/AND|OR/).each do |t|
+    @query.split(/AND|OR|\(|\)/).reject(&:blank?).each do |t|
       term = Term.new(t)
       parsed.sub!(term.to_s, term.in?(string).to_s)
     end
