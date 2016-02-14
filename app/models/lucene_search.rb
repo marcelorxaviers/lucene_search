@@ -10,16 +10,33 @@ class LuceneSearch
     evaluate(string)
   end
 
+  def valid_query?
+    begin
+      stderr = $stderr
+      $stderr.reopen(IO::NULL)
+      RubyVM::InstructionSequence.compile(parse('validating_query'))
+      return true
+    rescue Exception
+      false
+    ensure
+      $stderr.reopen(stderr)
+    end
+  end
+
   private
 
-  def evaluate(string)
+  def parse(string)
     parsed = @query.dup
     @query.split(/AND|OR|\(|\)/).reject(&:blank?).each do |t|
       term = Term.new(t)
       parsed.sub!(term.to_s, term.in?(string).to_s)
     end
-    parsed = parsed.gsub('AND', '&&').gsub('OR', '||')
-    eval(parsed)
+    parsed.gsub('AND', '&&').gsub('OR', '||')
+  end
+
+  def evaluate(string)
+    raise "Invalid query: Look for missing terms and parentheses" unless valid_query?
+    eval(parse(string)) ? true : false
   end
 
 end
