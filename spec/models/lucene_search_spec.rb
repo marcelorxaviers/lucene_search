@@ -40,79 +40,79 @@ RSpec.describe LuceneSearch, :type => :model do
 
         context "with asterisk" do
 
-	        context "starting with anything" do
-	          
-	          let(:without_asterisk) { LuceneSearch.new('nanas') }
-	          let(:with_asterisk_before) { LuceneSearch.new('*nanas') }
+          context "starting with anything" do
+            
+            let(:without_asterisk) { LuceneSearch.new('nanas') }
+            let(:with_asterisk_before) { LuceneSearch.new('*nanas') }
 
-	          it "returns true" do
-	            expect(without_asterisk.test(str)).not_to be
-	            expect(with_asterisk_before.test(str)).to be
-	          end
+            it "returns true" do
+              expect(without_asterisk.test(str)).not_to be
+              expect(with_asterisk_before.test(str)).to be
+            end
 
-	        end
+          end
 
-	        context "ending with anything" do
-	          
-	          let(:without_asterisk) { LuceneSearch.new('bana') }
-	          let(:with_asterisk_before) { LuceneSearch.new('bana*') }
+          context "ending with anything" do
+            
+            let(:without_asterisk) { LuceneSearch.new('bana') }
+            let(:with_asterisk_before) { LuceneSearch.new('bana*') }
 
-	          it "returns true" do
-	            expect(without_asterisk.test(str)).not_to be
-	            expect(with_asterisk_before.test(str)).to be
-	          end
+            it "returns true" do
+              expect(without_asterisk.test(str)).not_to be
+              expect(with_asterisk_before.test(str)).to be
+            end
 
-	        end
+          end
 
-	        context "starting and ending with anything" do
-	          
-	          let(:without_asterisk) { LuceneSearch.new('bana') }
-	          let(:with_asterisk_before) { LuceneSearch.new('*anan*') }
+          context "starting and ending with anything" do
+            
+            let(:without_asterisk) { LuceneSearch.new('bana') }
+            let(:with_asterisk_before) { LuceneSearch.new('*anan*') }
 
-	          it "returns true" do
-	            expect(without_asterisk.test(str)).not_to be
-	            expect(with_asterisk_before.test(str)).to be
-	          end
+            it "returns true" do
+              expect(without_asterisk.test(str)).not_to be
+              expect(with_asterisk_before.test(str)).to be
+            end
 
-	        end
+          end
 
-	        context "anything in the middle" do
-	          
-	          let(:without_asterisk) { LuceneSearch.new('banas') }
-	          let(:with_asterisk_before) { LuceneSearch.new('ba*nas') }
+          context "anything in the middle" do
+            
+            let(:without_asterisk) { LuceneSearch.new('banas') }
+            let(:with_asterisk_before) { LuceneSearch.new('ba*nas') }
 
-	          it "returns true" do
-	            expect(without_asterisk.test(str)).not_to be
-	            expect(with_asterisk_before.test(str)).to be
-	          end
+            it "returns true" do
+              expect(without_asterisk.test(str)).not_to be
+              expect(with_asterisk_before.test(str)).to be
+            end
 
-	        end
+          end
 
-	      end
+        end
 
-	      context "with quotes" do
-	      	
-	      	let(:search1) { LuceneSearch.new('"not much"') }
-	        let(:search2) { LuceneSearch.new('"not so much"') }
+        context "with quotes" do
+          
+          let(:search1) { LuceneSearch.new('"not much"') }
+          let(:search2) { LuceneSearch.new('"not so much"') }
 
-	        it "returns true" do
-	          expect(search1.test(str)).not_to be
-	          expect(search2.test(str)).to be
-	         end
+          it "returns true" do
+            expect(search1.test(str)).not_to be
+            expect(search2.test(str)).to be
+           end
 
-	      end
+        end
 
-	      context "with negation" do
-	      	
-	      	let(:search1) { LuceneSearch.new('-apples') }
-	        let(:search2) { LuceneSearch.new('-me') }
+        context "with negation" do
+          
+          let(:search1) { LuceneSearch.new('-apples') }
+          let(:search2) { LuceneSearch.new('-me') }
 
-	        it "returns true" do
-	          expect(search1.test(str)).not_to be
-	          expect(search2.test(str)).to be
-	         end
+          it "returns true" do
+            expect(search1.test(str)).not_to be
+            expect(search2.test(str)).to be
+           end
 
-	      end
+        end
 
       end
       
@@ -201,10 +201,20 @@ RSpec.describe LuceneSearch, :type => :model do
           expect(search1.test(str)).to be
         end
 
-    		it "returns false" do
+        it "returns false" do
           expect(search2.test(str)).not_to be
         end
 
+      end
+
+    end
+
+    context "all together" do
+
+      let(:search1) { LuceneSearch.new('-"I really dislike" AND (mangos OR app*s) AND bananas') }
+
+      it "returns true" do
+        expect(search1.test(str)).to be
       end
 
     end

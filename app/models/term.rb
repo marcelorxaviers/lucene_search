@@ -31,7 +31,7 @@ class Term
   end
 
   def negation?
-  	@negation
+    @negation
   end
 
 end
