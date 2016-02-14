@@ -2,6 +2,20 @@ require 'rails_helper'
 
 RSpec.describe LuceneSearch, :type => :model do
 
+  describe "#valid?" do
+  
+    let(:valid) { LuceneSearch.new('-"I really dislike" AND (mangos OR app*s) AND bananas') }
+    let(:invalid1) { LuceneSearch.new(' AND (mangos OR app*s) AND bananas') }
+    let(:invalid2) { LuceneSearch.new('-"I really dislike" AND ( OR app*s) AND bananas') }
+    let(:invalid3) { LuceneSearch.new('-"I really dislike" AND mangos OR app*s) AND bananas') }
+
+    it { expect(valid.valid?).to be }
+    it { expect(invalid1.valid?).not_to be }
+    it { expect(invalid2.valid?).not_to be }
+    it { expect(invalid3.valid?).not_to be }
+  
+  end
+
   describe "#test" do
     
     let(:str) { "I really like bananas, apples not so much" }

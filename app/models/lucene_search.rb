@@ -10,7 +10,7 @@ class LuceneSearch
     evaluate(string)
   end
 
-  def valid_query?
+  def valid?
     begin
       stderr = $stderr
       $stderr.reopen(IO::NULL)
@@ -35,7 +35,7 @@ class LuceneSearch
   end
 
   def evaluate(string)
-    raise "Invalid query: Look for missing terms and parentheses" unless valid_query?
+    raise "Invalid query: Look for missing terms and parentheses" unless valid?
     eval(parse(string)) ? true : false
   end
 
