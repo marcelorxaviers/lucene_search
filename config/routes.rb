@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :recipes, except: [:new, :edit]
   resources :lucene_searches, except: [:new, :edit]
   resources :lucene_searches, except: [:new, :edit]
   # The priority is based upon order of creation: first created -> highest priority.

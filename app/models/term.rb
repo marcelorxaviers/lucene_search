@@ -11,7 +11,7 @@ class Term
   end
 
   def in?(string)
-    r = regex =~ string || @original_term == string
+    r = regex =~ string.downcase || @original_term.downcase == string.downcase
     return negation? ? !r : r
   end
 
@@ -22,7 +22,7 @@ class Term
   private
 
   def self_regexing
-    term = @original_term.dup
+    term = @original_term.dup.downcase
     term = /[-*]/ =~ term[0]  ? term[1..-1] : "(#{@@punctuation}|\\A)#{term}"
     term = term[-1] == '*' ? term[0..-2] : "#{term}(#{@@punctuation}|\\Z)" 
     term.gsub!('"', '')

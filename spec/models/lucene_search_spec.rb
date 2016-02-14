@@ -22,19 +22,19 @@ RSpec.describe LuceneSearch, :type => :model do
     
     context "with a valid query" do
 
-      context "without opperations" do
+      context "without operations" do
         
         context "contains the term" do
           
           let(:search1) { LuceneSearch.new('bananas') }
           let(:search2) { LuceneSearch.new('apples') }
-          let(:in_the_beggining) { LuceneSearch.new('I') }
+          let(:in_the_beginning) { LuceneSearch.new('I') }
           let(:in_the_end) { LuceneSearch.new('much') }
 
           it "returns true" do
             expect(search1.test(str)).to be
             expect(search2.test(str)).to be
-            expect(in_the_beggining.test(str)).to be
+            expect(in_the_beginning.test(str)).to be
             expect(in_the_end.test(str)).to be
           end
 
