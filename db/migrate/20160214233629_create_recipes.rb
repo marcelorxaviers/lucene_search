@@ -1,8 +1,8 @@
 class CreateRecipes < ActiveRecord::Migration
   def change
     create_table :recipes do |t|
-      t.string :title
-      t.string :body
+      t.string :name
+      t.string :content
 
       t.timestamps null: false
     end

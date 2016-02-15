@@ -1,6 +1,6 @@
 class Term
 
-  @@punctuation = "[.,?!:;\s]"
+  @@punctuation = "[.,?!:;\s\t\n]"
 
   attr_reader :regex
 

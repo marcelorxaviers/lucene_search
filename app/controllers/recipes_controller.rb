@@ -1,12 +1,19 @@
+require 'json'
+
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:show, :update, :destroy]
 
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.all
+    render json: Recipe.all
+  end
 
-    render json: @recipes
+  # GET /search
+  # GET /search.json
+  def search
+    recipes = Recipe.lucene_search(lucene_query)
+    render json: recipes
   end
 
   # GET /recipes/1
@@ -54,6 +61,10 @@ class RecipesController < ApplicationController
     end
 
     def recipe_params
-      params.require(:recipe).permit(:title, :body)
+      params.require(:recipe).permit(:name, :content)
+    end
+
+    def lucene_query
+      JSON(params.first.first)["query"]
     end
 end

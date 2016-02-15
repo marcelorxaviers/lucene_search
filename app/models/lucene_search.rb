@@ -7,6 +7,14 @@ class LuceneSearch
   end
 
   def test(string)
+    begin
+      evaluate(string)
+    rescue Exception
+      false
+    end
+  end
+
+  def test!(string)
     evaluate(string)
   end
 
