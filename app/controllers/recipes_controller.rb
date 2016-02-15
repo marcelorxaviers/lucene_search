@@ -12,8 +12,9 @@ class RecipesController < ApplicationController
   # GET /search
   # GET /search.json
   def search
-    recipes = Recipe.lucene_search(lucene_query)
-    render json: recipes
+    entries = Recipe.lucene_search(lucene_query)
+    recipes = entries.map { |e| { name: e.name, content: e.content } }
+    render json: { hits: recipes.count,  documents: recipes }
   end
 
   # GET /recipes/1
