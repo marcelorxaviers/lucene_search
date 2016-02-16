@@ -6,7 +6,7 @@ class Term
 
   def initialize(original_term)
     @original_term = original_term.strip
-    @regex = self_regexing
+    @regex = to_regex
     @negation = @original_term[0] == '-' 
   end
 
@@ -21,7 +21,7 @@ class Term
 
   private
 
-  def self_regexing
+  def to_regex
     term = @original_term.dup.downcase
     term = /[-*]/ =~ term[0]  ? term[1..-1] : "(#{@@punctuation}|\\A)#{term}"
     term = term[-1] == '*' ? term[0..-2] : "#{term}(#{@@punctuation}|\\Z)" 
